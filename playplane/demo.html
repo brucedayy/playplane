@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>demo</title>
+    <meta charset="utf-8" />
+    <style type="text/css">
+        #bgdiv {
+            overflow: hidden;
+            /*border: 1px dashed #CCC;*/
+            height: 500px;
+            width:400px;
+            text-align: center;
+            float: left;
+        }
+        #bgdiv img {
+            /*border: 3px solid #F2F2F2;*/
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div id="bgdiv">
+        <div id="bgsubonediv">
+           <img src="img/bg.jpg"/>
+        </div>
+        <div id="bgsubtwodiv"></div>
+    </div>
+    <script>
+        var speed=20; //数字越大速度越慢
+        var bgdiv=document.getElementById("bgdiv");
+        var bgsubone=document.getElementById("bgsubonediv");
+        var bgsubtwo = document.getElementById("bgsubtwodiv");
+        bgsubtwo.innerHTML=bgsubone.innerHTML; //克隆demo1为demo2
+        bgdiv.scrollTop = bgdiv.scrollHeight;
+        function Marquee(){
+            if(bgsubone.offsetTop-bgdiv.scrollTop>=0)//当滚动至demo1与demo2交界时
+                bgdiv.scrollTop += bgsubtwo.offsetHeight; //demo跳到最顶端
+            else{
+                bgdiv.scrollTop--;
+            }
+        }
+        var MyMar=setInterval(Marquee,speed);
+        //tab.onmouseover=function() {clearInterval(MyMar)};//鼠标移上时清除定时器达到滚动停止的目的
+        //tab.onmouseout=function() {MyMar=setInterval(Marquee,speed)};//鼠标移开时重设定时器
+    </script>
+</body>
+</html>

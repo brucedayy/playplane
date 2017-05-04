@@ -1,0 +1,437 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>飞机大战</title>
+    <style>
+        body{
+            margin:0;
+        }
+
+        #gamePanel {
+            width: 400px;
+            height: 500px;
+            /*background: Black;*/
+            position: absolute;
+            /*left: 100px;
+            top: 100px;*/
+            /*background-image: url('img/bg.jpg');*/            
+        }
+
+            #gamePanel .score {
+                font-size: 20px;
+                color: White;
+                position: absolute;
+                left: 0;
+                top: 0;
+                z-index: 9999;
+            }
+
+            #gamePanel .bullet {
+                width: 10px;
+                height: 16px;
+                position: absolute;
+                /*background: url(img/bullet.png);*/
+                overflow: hidden;
+                _background: none;
+                /*_filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="img/bullet.png");*/
+                background-image:url(img/bullet.png);
+            }
+
+            #gamePanel .flyer {
+                width: 50px;
+                height: 50px;
+                position: absolute;
+                /*background: url(img/flyer.png);*/
+                _background: none;
+                /*_filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="img/flyer.png");*/
+                background-image:url(img/flyer.png);
+            }
+
+            #gamePanel .enemy {
+                width: 35px;
+                height: 30px;
+                position: absolute;
+                /*background: url(img/enemy.png);*/
+                _background: none;
+                /*_filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="img/enemy.png");*/
+                background-image:url(img/enemy1.png);
+            }
+
+            #gamePanel .bingo {
+                width: 18px;
+                height: 18px;
+                position: absolute;
+                /*background: url(img/bingo.png);*/
+                _background: none;
+                /*_filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="img/bingo.png");*/
+                background-image:url(img/bingo.png);
+            }
+
+        /*#startBtn {
+            border-width: 20px;
+            border-style: solid;
+            border-color: Black Black Black Green;
+            position: absolute;
+            left: 190px;
+            top: 240px;
+            cursor: pointer;
+            width: 0px;
+            height: 0px;
+            overflow: hidden;
+        }*/
+        #startBtn {
+            position: absolute;
+            background-color:cadetblue;
+            left: 150px;
+            top: 300px;
+            width: 110px;
+            height: 25px;
+            cursor: pointer;
+            overflow: hidden;
+            border: 5px solid #dedede;
+            -moz-border-radius: 15px; /* Gecko browsers */
+            -webkit-border-radius: 15px; /* Webkit browsers */
+            border-radius: 15px; /* W3C syntax */
+            text-align:center;
+            padding-top:5px;
+            font-size:18px;
+            font-family:'Microsoft JhengHei UI';
+        }
+
+       /*背景样式*/
+        #bgdiv {
+            overflow: hidden;
+            /*border: 1px dashed #CCC;*/
+            height: 500px;
+            width: 400px;
+            text-align: center;
+            float: left;
+        }
+        
+        #bgdiv img {
+            /*border: 3px solid #F2F2F2;*/
+            display: block;
+        }
+
+        #gamePanel .enemyBullet {
+            width: 29px;
+            height: 29px;
+            position: absolute;
+            background: url(img/enemybullet.png);
+            _background: none;
+            _filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="img/enemybullet.png");
+        }
+
+        #ranking {
+            position: absolute;
+            background-color: cadetblue;
+            left: 150px;
+            top: 250px;
+            width: 110px;
+            height: 25px;
+            cursor: pointer;
+            overflow: hidden;
+            border: 5px solid #dedede;
+            -moz-border-radius: 15px; /* Gecko browsers */
+            -webkit-border-radius: 15px; /* Webkit browsers */
+            border-radius: 15px; /* W3C syntax */
+            text-align: center;
+            padding-top: 5px;
+            font-size: 18px;
+            font-family: 'Microsoft JhengHei UI';
+        }
+
+        #help {
+            position: absolute;
+            background-color: cadetblue;
+            left: 150px;
+            top: 350px;
+            width: 110px;
+            height: 25px;
+            cursor: pointer;
+            overflow: hidden;
+            border: 5px solid #dedede;
+            -moz-border-radius: 15px; /* Gecko browsers */
+            -webkit-border-radius: 15px; /* Webkit browsers */
+            border-radius: 15px; /* W3C syntax */
+            text-align: center;
+            padding-top: 5px;
+            font-size: 18px;
+            font-family: 'Microsoft JhengHei UI';
+        }
+
+        #maintitle {
+            position: absolute;
+            left: 80px;
+            top: 100px;
+            width: 250px;
+            height: 78px;
+            background-image: url('img/logo.png');
+        }
+
+        #rankingcontent {
+            position: absolute;
+            width: 240px;
+            height: 380px;
+            border: 5px solid #dedede;
+            -moz-border-radius: 15px; /* Gecko browsers */
+            -webkit-border-radius: 15px; /* Webkit browsers */
+            border-radius: 15px; /* W3C syntax */
+            top:40px;
+            left:80px;
+            background-color:#dedede;
+            visibility:hidden;
+        }
+
+        #closeRanking{
+            position:absolute;
+            top:1px;
+            left:180px;
+            border: 3px solid #0094ff;
+            -moz-border-radius: 15px; /* Gecko browsers */
+            -webkit-border-radius: 15px; /* Webkit browsers */
+            border-radius: 15px; /* W3C syntax */
+            width:50px;
+            height:20px;
+            text-align:center;
+            font-size:18px;
+            font-family:'Microsoft JhengHei UI';
+            color:white;
+            cursor:pointer;
+            /*visibility:hidden;*/
+            background-color:#0094ff;
+        }
+
+        
+        #helpcontent {
+            position: absolute;
+            width: 230px;
+            height: 300px;
+            border: 5px solid #dedede;
+            -moz-border-radius: 15px; /* Gecko browsers */
+            -webkit-border-radius: 15px; /* Webkit browsers */
+            border-radius: 15px; /* W3C syntax */
+            top: 80px;
+            left: 80px;
+            background-color:#dedede;
+            visibility:hidden;
+        }
+
+        #closeHelp {
+            position: absolute;
+            top: 1px;
+            left: 175px;
+            border: 3px solid #0094ff;
+            -moz-border-radius: 15px; /* Gecko browsers */
+            -webkit-border-radius: 15px; /* Webkit browsers */
+            border-radius: 15px; /* W3C syntax */
+            width: 50px;
+            height: 20px;
+            text-align: center;
+            font-size: 18px;
+            font-family: 'Microsoft JhengHei UI';
+            color: white;
+            cursor: pointer;
+            background-color:#0094ff;
+        }
+
+        #askScoreDiv {
+            position: absolute;
+            width: 240px;
+            height: 280px;
+            border: 5px solid #dedede;
+            -moz-border-radius: 15px; /* Gecko browsers */
+            -webkit-border-radius: 15px; /* Webkit browsers */
+            border-radius: 15px; /* W3C syntax */
+            top: 100px;
+            left: 80px;
+            background-color:#dedede;
+            visibility:hidden;
+        }
+
+        #closeAskScoreDiv {
+            position: absolute;
+            top: 1px;
+            left: 175px;
+            border: 3px solid #0094ff;
+            -moz-border-radius: 15px; /* Gecko browsers */
+            -webkit-border-radius: 15px; /* Webkit browsers */
+            border-radius: 15px; /* W3C syntax */
+            width: 50px;
+            height: 20px;
+            text-align: center;
+            font-size: 18px;
+            font-family: 'Microsoft JhengHei UI';
+            color: white;
+            cursor: pointer;
+            background-color: #0094ff;
+        }
+
+        #rankContent{
+            font-size:20px;           
+        }
+        #btnSubmitScore {
+            height: 30px;
+            width: 100px;
+            -moz-border-radius: 15px; /* Gecko browsers */
+            -webkit-border-radius: 15px; /* Webkit browsers */
+            border-radius: 15px; /* W3C syntax */
+            font-size: 18px;
+            background-color: #0094ff;
+            text-align:center;
+            line-height:30px;
+            color:white;      
+            cursor:pointer;     
+        }
+    </style>
+    <script src="js/jquery-1.10.2.min.js"></script>
+</head>
+<body>
+    <div style="width:400px;height:500px;margin:auto;">
+        <div id="bgdiv">
+            <div id="bgsubonediv">
+                <img id="bgimg" src="img/bg.jpg" />
+            </div>
+            <div id="bgsubtwodiv"></div>
+        </div>
+
+        <div id="gamePanel" tabindex="0">
+            <div class="score" id="additionScore"><span id="score"></span></div>
+            <div id="maintitle"></div>
+            <div id="ranking" onclick="Ranking()">排行榜</div>
+            <div id="startBtn" onclick="Start()">开始游戏</div>
+            <div id="help" onclick="Help()">游戏帮助</div>
+            <!--帮助全局变量-->
+            <div id="staticglobalvalue" style="visibility:hidden">live</div>
+            <!--排行榜-->
+            <div id="rankingcontent">
+                <div id="closeRanking" onclick="CloseRanking()">关闭</div>
+                <div style="top:10px;left:10px;width:100px;height:30px;font-size:30px;font-family:华文琥珀;position:absolute;">前五名</div>
+                <div id="rankContent" style="top:60px;left:10px;width:200px;height:300px;position:absolute;"></div>
+            </div>          
+            <!--游戏帮助-->
+            <div id="helpcontent">
+                <div id="closeHelp" onclick="CloseHelp()">关闭</div>
+                游戏帮助<br/><br/><br>
+                本游戏是一款易上手的，操作<br />
+                难度不高的小游戏，玩家可以<br />
+                通过控制飞机移动躲避子弹并<br />
+                攻击敌机，来获得分数。<br />
+                键盘控制：←→↑↓控制方向<br/>
+                空格发射子弹
+            </div>   
+            <!--询问英雄分数-->
+            <div id="askScoreDiv">
+                <div id="closeAskScoreDiv" onclick="funCloseAskScore()">关闭</div>
+                <div style="width:200px;height:40px;top:70px;position:absolute;left:20px;
+                           font-family:'Microsoft JhengHei UI';font-size:28px;">请留下大名</div>
+                <div style="width:200px;height:50px;top:100px;position:absolute;left:20px;
+                           font-family:'Microsoft JhengHei UI';font-size:28px;"><input id="inputScore" style="height:20px;"/></div>
+                <div style="width:200px;height:50px;top:160px;position:absolute;left:20px;
+                           font-family:'Microsoft JhengHei UI';font-size:28px;"><div id="btnSubmitScore" onclick="funSubmitScore()">提交</div></div>
+            </div>        
+        </div>
+    </div>
+    <script type="text/javascript" src="js/flyer.js"></script>
+    <script type="text/javascript" src="js/enemy.js"></script>
+    <script type="text/javascript" src="js/bullet.js"></script>
+    <script type="text/javascript" src="js/game.js"></script>
+    <script type="text/javascript" src="js/enemyBullet.js"></script>
+
+    <audio id="bgauto" src="music/menu.mp3" autoplay="autoplay"> </audio>
+    <audio id="shootauto" src="music/destroyer_lazer1.mp3"> </audio>
+    <audio id="bombauto" src="music/explosion_rocket.mp3"> </audio>
+
+    <script>      
+        var finalScore;
+        var speed = 20; //数字越大速度越慢
+        var bgdiv = document.getElementById("bgdiv");
+        var bgsubone = document.getElementById("bgsubonediv");
+        var bgsubtwo = document.getElementById("bgsubtwodiv");
+        bgsubtwo.innerHTML = bgsubone.innerHTML; //克隆demo1为demo2
+        bgdiv.scrollTop = bgdiv.scrollHeight;
+        function Marquee() {
+            if (bgsubone.offsetTop - bgdiv.scrollTop >= 0)//当滚动至demo1与demo2交界时
+                bgdiv.scrollTop += bgsubtwo.offsetHeight; //demo跳到最顶端
+            else {
+                bgdiv.scrollTop--;
+            }
+        }
+        var MyMar = setInterval(Marquee, speed);
+        //tab.onmouseover=function() {clearInterval(MyMar)};//鼠标移上时清除定时器达到滚动停止的目的
+        //tab.onmouseout=function() {MyMar=setInterval(Marquee,speed)};//鼠标移开时重设定时器      
+        function CloseRanking() {
+            document.getElementById('rankingcontent').style.visibility = "hidden";
+        }
+        function CloseHelp() {
+            document.getElementById('helpcontent').style.visibility = "hidden";
+        }
+        //function jsonpCallback(result) {
+        //    //alert(result);  
+        //    //for (var i in result) {
+        //    //    alert(i + ":" + result[i]);//循环输出a:1,b:2,etc.  
+        //    //}
+        //    //document.write("ok");
+        //    alert("ok");
+        //}
+        function Ranking() {
+            $("#rankContent").children('div').remove();
+            $("#rankContent").children('br').remove();
+            //var url = "http://115.28.159.24:9000";
+            var url = "http://115.28.159.24:9000";
+            $.get(url, function (data, status) {
+                $("#rankContent").append("<br/>");
+                var playerJson = jQuery.parseJSON(data);
+                for (var i = 0; i < playerJson.length; i++) {
+                    $("#rankContent").append('<div>' + '第' + (i + 1).toString() + '名-' + playerJson[i].Name + '-' + playerJson[i].Score + '</div><br/>');
+                    //alert(playerJson[i].Name);
+                }
+            });
+         
+            //$.ajax({
+            //    url: "http://115.28.159.24:9000",
+            //    dataType: 'jsonp',
+            //    data: '',
+            //    jsonp: 'callback',
+            //    success: function (result) {
+            //        //for (var i in result) {
+            //        //    alert(i + ":" + result[i]);//循环输出a:1,b:2,etc.  
+            //        //}
+            //        alert("ok");
+            //    },
+            //    timeout: 3000
+            //});      
+            //var JSONP = document.createElement("script");
+            //JSONP.type = "text/javascript";
+            //JSONP.src = "http://115.28.159.24:9000?callback=jsonpCallback";
+            //document.getElementsByTagName("head")[0].appendChild(JSONP);
+
+            document.getElementById('rankingcontent').style.visibility = "visible";
+        }
+        function Help() {
+            document.getElementById('helpcontent').style.visibility = "visible";
+        }
+    
+        function addURLParam(url, name, value) {
+            url += (url.indexOf("?") == -1 ? "?" : "&");
+            url += encodeURIComponent(name) + "=" + encodeURIComponent(value);
+            return url;
+        }
+        //$("#gamePanel .enemy").css("background-image", "url(img/enemy3.png)");
+        function funSubmitScore() {            
+            var newScore = finalScore
+            var newName = document.getElementById("inputScore").value;
+            var url = "http://115.28.159.24:9000?name=" + newName + "&score=" + newScore;
+            $.get(url, function (data, status) {
+                //alert(data);
+                document.getElementById("askScoreDiv").style.visibility = "hidden";
+            });
+        }
+        function funCloseAskScore() {
+            document.getElementById("askScoreDiv").style.visibility = "hidden";
+        }
+    </script>
+
+</body>
+</html>

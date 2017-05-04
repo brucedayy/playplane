@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+	<meta charset="utf-8" />
+    <style type="text/css">
+        .enemyBullet{
+            width:20px;
+            height:30px;
+            background-color:#b6ff00;       
+            position:absolute;     
+        }               
+    </style>
+</head>
+<body>
+    <div id="maindiv" style="width:400px;height:500px;border:2px solid #ff0000;margin:auto;">  
+        <div id="flyer" style="width:100px;height:30px;background-color:#ffd800;margin-top:300px;margin-left:10px;position:absolute;"></div>  
+        <div id="enemy" style="width:100px;height:30px;background-color:#ffd800;margin-top:100px;margin-left:10px;position:absolute;"></div>  
+    </div>
+    <script>
+        var EnemyBullet = function () {
+            //子弹Dom元素
+            this.dom = null;
+            this.init();
+        };
+        EnemyBullet.prototype = {
+            //子弹移动速度
+            movepx: 1,
+            //子弹移动频率
+            movesp: 10,
+            init: function () {
+                this.dom = document.createElement('div');
+                this.dom.className = 'enemyBullet';
+            },
+
+            //设置敌机子弹的初始位置，根据敌机位置决定
+            setInitPosition: function (enemyinfo) {
+                this.dom.style.top = enemyinfo.offsetTop+'px';
+                alert(enemyinfo.offsetTop);
+            },
+
+            animation: function () {
+                var _this = this;
+                //处理移动函数
+                var process = function () {
+                    var top = _this.dom.offsetTop;
+                    top = top + _this.movepx >= 0 ? top + _this.movepx : 0;
+                    _this.dom.style.top = top + 'px';
+                    if (Math.abs(document.getElementById("flyer").offsetTop - _this.dom.offsetTop) < 4
+                        && Math.abs(document.getElementById("flyer").offsetLeft - _this.dom.offsetLeft) < 4)
+                        alert(document.getElementById("flyer").offsetLeft - _this.dom.offsetLeft);
+                    //判断是否移动到尽头
+                    if (top < 480) {
+                        setTimeout(process, _this.movesp);
+                    }
+                }
+                process();
+            }
+        };
+
+        var maindiv = document.getElementById("maindiv");
+        var bullet = new EnemyBullet();
+        maindiv.appendChild(bullet.dom);
+        bullet.setInitPosition(document.getElementById("enemy"));
+        bullet.animation();
+    </script>
+</body>
+</html>
